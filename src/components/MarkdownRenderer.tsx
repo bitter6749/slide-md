@@ -90,8 +90,8 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       // タイトル属性からサイズ指定を解析
       let width = 'auto';
       let height = 'auto';
-      let maxWidth = '90%';
-      let maxHeight = '50vh';
+      let maxWidth = '100%';
+      let maxHeight = '60vh';
       let displayTitle = title || alt;
       
       if (title) {
@@ -113,12 +113,12 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       }
       
       return (
-        <div className="flex justify-center items-center w-full overflow-hidden mb-4 md:mb-6">
+        <div className="flex justify-center items-center w-full mb-4 md:mb-6">
           <img 
             src={src} 
             alt={alt}
             title={displayTitle}
-            className="rounded-lg shadow-lg object-contain"
+            className="rounded-lg shadow-lg object-contain max-w-full h-auto"
             style={{
               width,
               height,
@@ -148,7 +148,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       </td>
     ),
     pre: ({children}: any) => (
-      <div className="w-full overflow-hidden mb-4 md:mb-6">
+      <div className="w-full mb-4 md:mb-6">
         <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto text-sm">
           {children}
         </pre>
@@ -170,34 +170,34 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
 // レイアウト別のCSSクラス
 function getLayoutClasses(layout: SlideLayout, baseClassName: string): string {
-  const baseClasses = `${baseClassName} w-full h-full overflow-hidden`;
+  const baseClasses = `${baseClassName} w-full h-full`;
   
   switch (layout) {
     case 'title':
-      return `${baseClasses} flex flex-col justify-center items-center text-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
+      return `${baseClasses} flex flex-col justify-center items-center text-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`;
     case 'center':
-      return `${baseClasses} flex flex-col justify-center items-center text-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
+      return `${baseClasses} flex flex-col justify-center items-center text-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`;
     case 'hero':
-      return `${baseClasses} flex flex-col justify-center items-center text-center space-y-4 md:space-y-6 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
+      return `${baseClasses} flex flex-col justify-center items-center text-center space-y-4 md:space-y-6 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`;
     case 'quote':
-      return `${baseClasses} flex flex-col justify-center items-center text-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
+      return `${baseClasses} flex flex-col justify-center items-center text-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`;
     case 'code':
-      return `${baseClasses} flex flex-col justify-center space-y-4 md:space-y-6 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
+      return `${baseClasses} flex flex-col justify-center space-y-4 md:space-y-6 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`;
     case 'stats':
-      return `${baseClasses} flex flex-col justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
+      return `${baseClasses} flex flex-col justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`;
     case 'features':
-      return `${baseClasses} flex flex-col space-y-6 md:space-y-8 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
+      return `${baseClasses} flex flex-col space-y-6 md:space-y-8 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`;
     case 'timeline':
-      return `${baseClasses} flex flex-col space-y-6 md:space-y-8 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
+      return `${baseClasses} flex flex-col space-y-6 md:space-y-8 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`;
     case 'team':
-      return `${baseClasses} grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
+      return `${baseClasses} grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`;
     case 'gallery':
-      return `${baseClasses} grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-center justify-items-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
+      return `${baseClasses} grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-center justify-items-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`;
     case 'split':
-      return `${baseClasses} grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
+      return `${baseClasses} grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`;
     case 'compare':
-      return `${baseClasses} grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
+      return `${baseClasses} grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`;
     default:
-      return `${baseClasses} flex flex-col justify-start space-y-4 md:space-y-6 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-y-auto`;
+      return `${baseClasses} flex flex-col justify-start space-y-4 md:space-y-6 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
   }
 }
