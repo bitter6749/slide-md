@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { PresentationData, SlideLayout } from '../types/presentation';
 import { parseMarkdown, layoutTemplates } from '../utils/markdownParser';
-import { MarkdownRenderer } from './MarkdownRenderer';
+import { SlideRenderer } from './SlideRenderer';
 import { Play, Pause, FileText, Layout, Image, Quote, Code, BarChart3, Users, Baseline as Timeline, Grid3x3, Maximize2, Minimize2, ChevronLeft, ChevronRight, Download, Upload, Sun, Moon } from 'lucide-react';
 
 interface SlideEditorProps {
@@ -149,7 +149,7 @@ export const SlideEditor: React.FC<SlideEditorProps> = ({ initialMarkdown = '' }
           <div className="flex-1 flex items-center justify-center p-8">
             {currentSlide && (
               <div className="w-full max-w-7xl">
-                <MarkdownRenderer
+                <SlideRenderer
                   content={currentSlide.content}
                   layout={currentSlide.layout}
                   theme={theme}
@@ -312,7 +312,7 @@ export const SlideEditor: React.FC<SlideEditorProps> = ({ initialMarkdown = '' }
           <div className="flex-1 relative overflow-hidden" style={{ backgroundColor }}>
             <div className="w-full h-full p-4">
               {currentSlide ? (
-                <MarkdownRenderer
+                <SlideRenderer
                   content={currentSlide.content}
                   layout={currentSlide.layout}
                   theme={theme}
