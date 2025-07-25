@@ -18,60 +18,61 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   theme,
   className = ''
 }) => {
-  // 特殊コンテナの処理
-  const processedContent = processSpecialContainers(content, layout);
-
   const components = {
     code({node, inline, className, children, ...props}: any) {
       const match = /language-(\w+)/.exec(className || '');
       return !inline && match ? (
-        <SyntaxHighlighter
-          style={theme === 'dark' ? oneDark : oneLight}
-          language={match[1]}
-          PreTag="div"
-          className="rounded-lg max-w-full overflow-x-auto text-sm"
-          customStyle={{
-            maxWidth: '100%',
-            fontSize: '0.875rem',
-            lineHeight: '1.5'
-          }}
-          {...props}
-        >
-          {String(children).replace(/\n$/, '')}
-        </SyntaxHighlighter>
+        <div className="max-w-full overflow-hidden">
+          <SyntaxHighlighter
+            style={theme === 'dark' ? oneDark : oneLight}
+            language={match[1]}
+            PreTag="div"
+            className="rounded-lg text-sm"
+            customStyle={{
+              maxWidth: '100%',
+              fontSize: '0.875rem',
+              lineHeight: '1.5',
+              margin: 0,
+              overflow: 'auto'
+            }}
+            {...props}
+          >
+            {String(children).replace(/\n$/, '')}
+          </SyntaxHighlighter>
+        </div>
       ) : (
-        <code className={`${className} bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm`} {...props}>
+        <code className={`${className} bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm max-w-full break-all`} {...props}>
           {children}
         </code>
       );
     },
     h1: ({children}: any) => (
-      <h1 className="text-3xl md:text-5xl font-bold mb-8 text-center leading-tight max-w-full break-words">
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8 text-center leading-tight max-w-full break-words">
         {children}
       </h1>
     ),
     h2: ({children}: any) => (
-      <h2 className="text-2xl md:text-3xl font-bold mb-6 leading-tight max-w-full break-words">
+      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 leading-tight max-w-full break-words">
         {children}
       </h2>
     ),
     h3: ({children}: any) => (
-      <h3 className="text-xl md:text-2xl font-semibold mb-4 leading-tight max-w-full break-words">
+      <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-3 md:mb-4 leading-tight max-w-full break-words">
         {children}
       </h3>
     ),
     p: ({children}: any) => (
-      <p className="text-base md:text-lg mb-6 leading-relaxed max-w-full break-words">
+      <p className="text-sm md:text-base lg:text-lg mb-4 md:mb-6 leading-relaxed max-w-full break-words">
         {children}
       </p>
     ),
     ul: ({children}: any) => (
-      <ul className="text-base md:text-lg space-y-3 mb-6 list-disc pl-6 max-w-full">
+      <ul className="text-sm md:text-base lg:text-lg space-y-2 md:space-y-3 mb-4 md:mb-6 list-disc pl-6 max-w-full">
         {children}
       </ul>
     ),
     ol: ({children}: any) => (
-      <ol className="text-base md:text-lg space-y-3 mb-6 list-decimal pl-6 max-w-full">
+      <ol className="text-sm md:text-base lg:text-lg space-y-2 md:space-y-3 mb-4 md:mb-6 list-decimal pl-6 max-w-full">
         {children}
       </ol>
     ),
@@ -81,16 +82,16 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       </li>
     ),
     blockquote: ({children}: any) => (
-      <blockquote className="border-l-4 border-blue-500 pl-8 py-4 italic text-lg md:text-xl mb-8 bg-blue-900/20 rounded-r-lg max-w-full break-words">
+      <blockquote className="border-l-4 border-blue-500 pl-6 md:pl-8 py-4 italic text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 bg-blue-900/20 rounded-r-lg max-w-full break-words">
         {children}
       </blockquote>
     ),
     img: ({src, alt, title}: any) => {
-      // タイトル属性からサイズ指定を解析 (例: "画像説明|width:400px|height:300px")
+      // タイトル属性からサイズ指定を解析
       let width = 'auto';
       let height = 'auto';
       let maxWidth = '100%';
-      let maxHeight = '70vh';
+      let maxHeight = '60vh';
       let displayTitle = title || alt;
       
       if (title) {
@@ -112,42 +113,46 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       }
       
       return (
-        <img 
-          src={src} 
-          alt={alt}
-          title={displayTitle}
-          className="rounded-lg shadow-lg mx-auto object-contain"
-          style={{
-            width,
-            height,
-            maxWidth,
-            maxHeight
-          }}
-          loading="lazy"
-        />
+        <div className="flex justify-center items-center max-w-full overflow-hidden mb-4 md:mb-6">
+          <img 
+            src={src} 
+            alt={alt}
+            title={displayTitle}
+            className="rounded-lg shadow-lg object-contain"
+            style={{
+              width,
+              height,
+              maxWidth,
+              maxHeight
+            }}
+            loading="lazy"
+          />
+        </div>
       );
     },
     table: ({children}: any) => (
-      <div className="overflow-x-auto max-w-full mb-6">
-        <table className="min-w-full border-collapse border border-gray-300 dark:border-gray-600">
+      <div className="overflow-x-auto max-w-full mb-4 md:mb-6">
+        <table className="min-w-full border-collapse border border-gray-300 dark:border-gray-600 text-sm md:text-base">
           {children}
         </table>
       </div>
     ),
     th: ({children}: any) => (
-      <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 bg-gray-100 dark:bg-gray-700 font-semibold text-left break-words">
+      <th className="border border-gray-300 dark:border-gray-600 px-3 md:px-4 py-2 bg-gray-100 dark:bg-gray-700 font-semibold text-left break-words">
         {children}
       </th>
     ),
     td: ({children}: any) => (
-      <td className="border border-gray-300 dark:border-gray-600 px-4 py-2 break-words">
+      <td className="border border-gray-300 dark:border-gray-600 px-3 md:px-4 py-2 break-words">
         {children}
       </td>
     ),
     pre: ({children}: any) => (
-      <pre className="max-w-full overflow-x-auto bg-gray-100 dark:bg-gray-800 p-4 rounded-lg mb-6">
-        {children}
-      </pre>
+      <div className="max-w-full overflow-hidden mb-4 md:mb-6">
+        <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto text-sm">
+          {children}
+        </pre>
+      </div>
     ),
   };
 
@@ -157,156 +162,42 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         remarkPlugins={[remarkGfm]}
         components={components}
       >
-        {processedContent}
+        {content}
       </ReactMarkdown>
     </div>
   );
 };
 
-// 特殊コンテナの処理
-function processSpecialContainers(content: string, layout: SlideLayout): string {
-  if (layout === 'split') {
-    return content.replace(
-      /::: split\n([\s\S]*?)\n:::/,
-      (match, innerContent) => {
-        const sections = innerContent.split(/\n### /);
-        if (sections.length >= 2) {
-          const leftTitle = sections[0].replace(/^### /, '').split('\n')[0];
-          const leftContent = sections[0].replace(/^### .*?\n/, '').trim();
-          const rightTitle = sections[1].split('\n')[0];
-          const rightContent = sections[1].replace(/^.*?\n/, '').trim();
-          
-          return `### ${leftTitle}
-
-${leftContent}
-
----split---
-
-### ${rightTitle}
-
-${rightContent}`;
-        }
-        return innerContent;
-      }
-    );
-  }
-
-  if (layout === 'compare') {
-    return content.replace(
-      /::: compare\n([\s\S]*?)\n:::/,
-      (match, innerContent) => {
-        const sections = innerContent.split(/\n### /);
-        if (sections.length >= 2) {
-          const leftTitle = sections[0].replace(/^### /, '').split('\n')[0];
-          const leftContent = sections[0].replace(/^### .*?\n/, '').trim();
-          const rightTitle = sections[1].split('\n')[0];
-          const rightContent = sections[1].replace(/^.*?\n/, '').trim();
-          
-          return `### ${leftTitle}
-
-${leftContent}
-
----compare---
-
-### ${rightTitle}
-
-${rightContent}`;
-        }
-        return innerContent;
-      }
-    );
-  }
-
-  if (layout === 'stats') {
-    return content.replace(
-      /::: stats\n([\s\S]*?)\n:::/,
-      (match, innerContent) => {
-        const sections = innerContent.split(/\n### /);
-        let result = '';
-        sections.forEach((section, index) => {
-          if (section.trim()) {
-            const title = section.replace(/^### /, '').split('\n')[0];
-            const content = section.replace(/^### .*?\n/, '').trim();
-            if (index > 0) result += '\n\n---stat---\n\n';
-            result += `### ${title}\n\n${content}`;
-          }
-        });
-        return result;
-      }
-    );
-  }
-
-  if (layout === 'features') {
-    return content.replace(
-      /::: features\n([\s\S]*?)\n:::/,
-      (match, innerContent) => {
-        const sections = innerContent.split(/\n### /);
-        let result = '';
-        sections.forEach((section, index) => {
-          if (section.trim()) {
-            const title = section.replace(/^### /, '').split('\n')[0];
-            const content = section.replace(/^### .*?\n/, '').trim();
-            if (index > 0) result += '\n\n---feature---\n\n';
-            result += `### ${title}\n\n${content}`;
-          }
-        });
-        return result;
-      }
-    );
-  }
-
-  if (layout === 'quote') {
-    return content.replace(
-      /::: quote\n([\s\S]*?)\n:::/,
-      (match, innerContent) => {
-        return innerContent;
-      }
-    );
-  }
-
-  if (layout === 'center') {
-    return content.replace(
-      /::: center\n([\s\S]*?)\n:::/,
-      (match, innerContent) => {
-        return innerContent;
-      }
-    );
-  }
-
-  // その他の特殊コンテナも同様に処理
-  return content.replace(/::: \w+\n([\s\S]*?)\n:::/g, '$1');
-}
-
 // レイアウト別のCSSクラス
 function getLayoutClasses(layout: SlideLayout, baseClassName: string): string {
-  const baseClasses = `${baseClassName} w-full h-full max-w-full max-h-full px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`;
+  const baseClasses = `${baseClassName} w-full h-full max-w-full max-h-full overflow-hidden`;
   
   switch (layout) {
     case 'title':
-      return `${baseClasses} flex flex-col justify-center items-center text-center`;
+      return `${baseClasses} flex flex-col justify-center items-center text-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
     case 'center':
-      return `${baseClasses} flex flex-col justify-center items-center text-center`;
+      return `${baseClasses} flex flex-col justify-center items-center text-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
     case 'hero':
-      return `${baseClasses} flex flex-col justify-center items-center text-center space-y-6`;
+      return `${baseClasses} flex flex-col justify-center items-center text-center space-y-4 md:space-y-6 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
     case 'quote':
-      return `${baseClasses} flex flex-col justify-center items-center text-center max-w-5xl mx-auto`;
+      return `${baseClasses} flex flex-col justify-center items-center text-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
     case 'code':
-      return `${baseClasses} flex flex-col justify-center space-y-6`;
+      return `${baseClasses} flex flex-col justify-center space-y-4 md:space-y-6 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
     case 'stats':
-      return `${baseClasses} flex flex-col justify-center`;
+      return `${baseClasses} flex flex-col justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
     case 'features':
-      return `${baseClasses} flex flex-col space-y-8`;
+      return `${baseClasses} flex flex-col space-y-6 md:space-y-8 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
     case 'timeline':
-      return `${baseClasses} flex flex-col space-y-8`;
+      return `${baseClasses} flex flex-col space-y-6 md:space-y-8 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
     case 'team':
-      return `${baseClasses} grid grid-cols-1 md:grid-cols-3 gap-8 items-center`;
+      return `${baseClasses} grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
     case 'gallery':
-      return `${baseClasses} grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-center justify-items-center`;
+      return `${baseClasses} grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-center justify-items-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
     case 'split':
-      return `${baseClasses} grid grid-cols-1 md:grid-cols-2 gap-8 items-start`;
+      return `${baseClasses} grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
     case 'compare':
-      return `${baseClasses} grid grid-cols-1 md:grid-cols-2 gap-8 items-start`;
+      return `${baseClasses} grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`;
     default:
-      return `${baseClasses} flex flex-col justify-start space-y-6 overflow-y-auto`;
+      return `${baseClasses} flex flex-col justify-start space-y-4 md:space-y-6 px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-y-auto`;
   }
 }
