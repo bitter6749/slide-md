@@ -26,22 +26,22 @@ export const SlideRenderer: React.FC<SlideRendererProps> = ({
       
       if (validSections.length >= 2) {
         return (
-          <div className={`${className} w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`}>
+          <div className={`${className} w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-7xl items-start">
-              <div className="space-y-4 flex flex-col justify-center">
+              <div className="space-y-4 overflow-hidden flex flex-col justify-center">
                 <MarkdownRenderer
                   content={validSections[0].trim()}
                   layout="content"
                   theme={theme}
-                  className=""
+                  className="overflow-hidden"
                 />
               </div>
-              <div className="space-y-4 flex flex-col justify-center">
+              <div className="space-y-4 overflow-hidden flex flex-col justify-center">
                 <MarkdownRenderer
                   content={validSections[1].trim()}
                   layout="content"
                   theme={theme}
-                  className=""
+                  className="overflow-hidden"
                 />
               </div>
             </div>
@@ -61,22 +61,22 @@ export const SlideRenderer: React.FC<SlideRendererProps> = ({
       
       if (validSections.length >= 2) {
         return (
-          <div className={`${className} w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`}>
+          <div className={`${className} w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-7xl items-start">
-              <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-lg border-l-4 border-red-500 flex flex-col justify-center">
+              <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-lg border-l-4 border-red-500 overflow-hidden flex flex-col justify-center">
                 <MarkdownRenderer
                   content={validSections[0].trim()}
                   layout="content"
                   theme={theme}
-                  className="text-red-700 dark:text-red-300"
+                  className="overflow-hidden text-red-700 dark:text-red-300"
                 />
               </div>
-              <div className="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg border-l-4 border-green-500 flex flex-col justify-center">
+              <div className="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg border-l-4 border-green-500 overflow-hidden flex flex-col justify-center">
                 <MarkdownRenderer
                   content={validSections[1].trim()}
                   layout="content"
                   theme={theme}
-                  className="text-green-700 dark:text-green-300"
+                  className="overflow-hidden text-green-700 dark:text-green-300"
                 />
               </div>
             </div>
@@ -95,15 +95,15 @@ export const SlideRenderer: React.FC<SlideRendererProps> = ({
       const validSections = sections.filter(section => section.trim().startsWith('###'));
       
       return (
-        <div className={`${className} w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`}>
+        <div className={`${className} w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-7xl items-center justify-items-center">
             {validSections.map((section, index) => (
-              <div key={index} className="text-center space-y-2">
+              <div key={index} className="text-center space-y-2 overflow-hidden">
                 <MarkdownRenderer
                   content={section.trim()}
                   layout="content"
                   theme={theme}
-                  className=""
+                  className="overflow-hidden"
                 />
               </div>
             ))}
@@ -122,15 +122,15 @@ export const SlideRenderer: React.FC<SlideRendererProps> = ({
       const validSections = sections.filter(section => section.trim().startsWith('###'));
       
       return (
-        <div className={`${className} w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`}>
+        <div className={`${className} w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-7xl items-start">
             {validSections.map((section, index) => (
-              <div key={index} className="space-y-4 flex flex-col justify-center">
+              <div key={index} className="space-y-4 overflow-hidden flex flex-col justify-center">
                 <MarkdownRenderer
                   content={section.trim()}
                   layout="content"
                   theme={theme}
-                  className=""
+                  className="overflow-hidden"
                 />
               </div>
             ))}
@@ -146,13 +146,13 @@ export const SlideRenderer: React.FC<SlideRendererProps> = ({
     if (quoteMatch) {
       const innerContent = quoteMatch[1];
       return (
-        <div className={`${className} w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`}>
+        <div className={`${className} w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`}>
           <div className="max-w-5xl text-center">
             <MarkdownRenderer
               content={innerContent.trim()}
               layout="content"
               theme={theme}
-              className=""
+              className="overflow-hidden"
             />
           </div>
         </div>
@@ -166,13 +166,13 @@ export const SlideRenderer: React.FC<SlideRendererProps> = ({
     if (centerMatch) {
       const innerContent = centerMatch[1];
       return (
-        <div className={`${className} w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8`}>
+        <div className={`${className} w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-12 py-4 md:py-6 lg:py-8 overflow-hidden`}>
           <div className="text-center max-w-5xl">
             <MarkdownRenderer
               content={innerContent.trim()}
               layout="content"
               theme={theme}
-              className=""
+              className="overflow-hidden"
             />
           </div>
         </div>
@@ -182,7 +182,7 @@ export const SlideRenderer: React.FC<SlideRendererProps> = ({
 
   // デフォルトのレンダリング
   return (
-    <div className={`${className} w-full h-full`}>
+    <div className={`${className} w-full h-full overflow-hidden`}>
       <MarkdownRenderer
         content={content}
         layout={layout}
