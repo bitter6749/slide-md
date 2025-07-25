@@ -22,14 +22,14 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     code({node, inline, className, children, ...props}: any) {
       const match = /language-(\w+)/.exec(className || '');
       return !inline && match ? (
-        <div className="max-w-full overflow-hidden">
+        <div className="w-full overflow-hidden">
           <SyntaxHighlighter
             style={theme === 'dark' ? oneDark : oneLight}
             language={match[1]}
             PreTag="div"
             className="rounded-lg text-sm"
             customStyle={{
-              maxWidth: '100%',
+              width: '100%',
               fontSize: '0.875rem',
               lineHeight: '1.5',
               margin: 0,
@@ -41,48 +41,48 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
           </SyntaxHighlighter>
         </div>
       ) : (
-        <code className={`${className} bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm max-w-full break-all`} {...props}>
+        <code className={`${className} bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm break-all`} {...props}>
           {children}
         </code>
       );
     },
     h1: ({children}: any) => (
-      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8 text-center leading-tight max-w-full break-words">
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8 text-center leading-tight break-words overflow-hidden">
         {children}
       </h1>
     ),
     h2: ({children}: any) => (
-      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 leading-tight max-w-full break-words">
+      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 leading-tight break-words overflow-hidden">
         {children}
       </h2>
     ),
     h3: ({children}: any) => (
-      <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-3 md:mb-4 leading-tight max-w-full break-words">
+      <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-3 md:mb-4 leading-tight break-words overflow-hidden">
         {children}
       </h3>
     ),
     p: ({children}: any) => (
-      <p className="text-sm md:text-base lg:text-lg mb-4 md:mb-6 leading-relaxed max-w-full break-words">
+      <p className="text-sm md:text-base lg:text-lg mb-4 md:mb-6 leading-relaxed break-words overflow-hidden">
         {children}
       </p>
     ),
     ul: ({children}: any) => (
-      <ul className="text-sm md:text-base lg:text-lg space-y-2 md:space-y-3 mb-4 md:mb-6 list-disc pl-6 max-w-full">
+      <ul className="text-sm md:text-base lg:text-lg space-y-2 md:space-y-3 mb-4 md:mb-6 list-disc pl-6 overflow-hidden">
         {children}
       </ul>
     ),
     ol: ({children}: any) => (
-      <ol className="text-sm md:text-base lg:text-lg space-y-2 md:space-y-3 mb-4 md:mb-6 list-decimal pl-6 max-w-full">
+      <ol className="text-sm md:text-base lg:text-lg space-y-2 md:space-y-3 mb-4 md:mb-6 list-decimal pl-6 overflow-hidden">
         {children}
       </ol>
     ),
     li: ({children}: any) => (
-      <li className="break-words max-w-full">
+      <li className="break-words overflow-hidden">
         {children}
       </li>
     ),
     blockquote: ({children}: any) => (
-      <blockquote className="border-l-4 border-blue-500 pl-6 md:pl-8 py-4 italic text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 bg-blue-900/20 rounded-r-lg max-w-full break-words">
+      <blockquote className="border-l-4 border-blue-500 pl-6 md:pl-8 py-4 italic text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 bg-blue-900/20 rounded-r-lg break-words overflow-hidden">
         {children}
       </blockquote>
     ),
@@ -90,8 +90,8 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       // タイトル属性からサイズ指定を解析
       let width = 'auto';
       let height = 'auto';
-      let maxWidth = '100%';
-      let maxHeight = '60vh';
+      let maxWidth = '90%';
+      let maxHeight = '50vh';
       let displayTitle = title || alt;
       
       if (title) {
@@ -113,7 +113,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       }
       
       return (
-        <div className="flex justify-center items-center max-w-full overflow-hidden mb-4 md:mb-6">
+        <div className="flex justify-center items-center w-full overflow-hidden mb-4 md:mb-6">
           <img 
             src={src} 
             alt={alt}
@@ -131,7 +131,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       );
     },
     table: ({children}: any) => (
-      <div className="overflow-x-auto max-w-full mb-4 md:mb-6">
+      <div className="overflow-x-auto w-full mb-4 md:mb-6">
         <table className="min-w-full border-collapse border border-gray-300 dark:border-gray-600 text-sm md:text-base">
           {children}
         </table>
@@ -148,7 +148,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       </td>
     ),
     pre: ({children}: any) => (
-      <div className="max-w-full overflow-hidden mb-4 md:mb-6">
+      <div className="w-full overflow-hidden mb-4 md:mb-6">
         <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto text-sm">
           {children}
         </pre>
@@ -170,7 +170,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
 // レイアウト別のCSSクラス
 function getLayoutClasses(layout: SlideLayout, baseClassName: string): string {
-  const baseClasses = `${baseClassName} w-full h-full max-w-full max-h-full overflow-hidden`;
+  const baseClasses = `${baseClassName} w-full h-full overflow-hidden`;
   
   switch (layout) {
     case 'title':

@@ -32,7 +32,7 @@ theme: dark
 
 ## 問題：PowerPointが難しい
 
-![PowerPointの画面](https://images.pexels.com/photos/147413/twitter-facebook-together-exchange-of-information-147413.jpeg?auto=compress&cs=tinysrgb&w=800)
+![PowerPointの画面](https://images.pexels.com/photos/147413/twitter-facebook-together-exchange-of-information-147413.jpeg?auto=compress&cs=tinysrgb&w=800 "PowerPointの複雑な画面|width:600px|maxHeight:400px")
 
 資料作成の機会が増えたけど...
 
