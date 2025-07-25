@@ -146,7 +146,7 @@ export const SlideEditor: React.FC<SlideEditorProps> = ({ initialMarkdown = '' }
           </div>
 
           {/* スライド表示 */}
-          <div className="flex-1 flex items-center justify-center p-8">
+          <div className="flex-1 flex items-center justify-center p-8 overflow-hidden">
             {currentSlide && (
               <div className="w-full max-w-7xl">
                 <SlideRenderer
@@ -309,20 +309,22 @@ export const SlideEditor: React.FC<SlideEditorProps> = ({ initialMarkdown = '' }
           </div>
 
           {/* スライドプレビュー */}
-          <div className="flex-1 relative overflow-hidden" style={{ backgroundColor }}>
-            <div className="w-full h-full p-4">
-              {currentSlide ? (
-                <SlideRenderer
-                  content={currentSlide.content}
-                  layout={currentSlide.layout}
-                  theme={theme}
-                  className="w-full h-full"
-                />
-              ) : (
-                <div className="flex items-center justify-center h-full text-gray-400">
-                  スライドがありません
-                </div>
-              )}
+          <div className="flex-1 relative" style={{ backgroundColor }}>
+            <div className="absolute inset-0 overflow-auto">
+              <div className="min-h-full w-full p-4">
+                {currentSlide ? (
+                  <SlideRenderer
+                    content={currentSlide.content}
+                    layout={currentSlide.layout}
+                    theme={theme}
+                    className="w-full h-full"
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-gray-400">
+                    スライドがありません
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
