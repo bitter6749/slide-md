@@ -232,7 +232,7 @@ function nextSlide() {
 
 ## デモ：Markdownからスライド生成
 
-```markdown
+\`\`\`markdown
 ---
 title: プレゼンテーション
 author: 高専生
@@ -256,7 +256,7 @@ author: 高専生
 ### 右側  
 内容
 :::
-```
+\`\`\`
 
 **→ 美しいスライドに自動変換！**
 
