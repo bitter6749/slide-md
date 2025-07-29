@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { PresentationData, SlideLayout } from '../types/presentation';
 import { parseMarkdown, layoutTemplates } from '../utils/markdownParser';
 import { SlideRenderer } from './SlideRenderer';
-import { Play, Pause, FileText, Layout, Image, Quote, Code, BarChart3, Users, Baseline as Timeline, Grid3x3, Maximize2, Minimize2, ChevronLeft, ChevronRight, Download, Upload, Sun, Moon } from 'lucide-react';
+import { Play, FileText, Layout, Image, Quote, Code, BarChart3, Users, Baseline as Timeline, Grid3x3, Minimize2, ChevronLeft, ChevronRight, Download, Upload, Sun, } from 'lucide-react';
 
 interface SlideEditorProps {
   initialMarkdown?: string;
@@ -14,7 +14,7 @@ export const SlideEditor: React.FC<SlideEditorProps> = ({ initialMarkdown = '' }
     parseMarkdown(initialMarkdown)
   );
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  // const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPresentationMode, setIsPresentationMode] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [backgroundColor, setBackgroundColor] = useState('#1f2937');
@@ -75,13 +75,26 @@ export const SlideEditor: React.FC<SlideEditorProps> = ({ initialMarkdown = '' }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && file.type === 'text/markdown') {
+    if(!file) return;
+
+    const isMarkdownFile = 
+      file.type === 'text/markdown' ||
+      file.name.endsWith('.md') ||
+      file.name.endsWith('.markdown');
+
+    // Markdownファイルのみを受け入れる
+    if (isMarkdownFile) {
       const reader = new FileReader();
       reader.onload = (e) => {
         const content = e.target?.result as string;
+
+        console.log('Uploaded Markdown content:', content);
+
         setMarkdown(content);
       };
       reader.readAsText(file);
+    } else {
+      alert('Markdownファイルをアップロードしてください。');
     }
   };
 
@@ -111,7 +124,8 @@ export const SlideEditor: React.FC<SlideEditorProps> = ({ initialMarkdown = '' }
     team: <Users className="w-4 h-4" />,
     hero: <Image className="w-4 h-4" />,
     code: <Code className="w-4 h-4" />,
-    center: <Layout className="w-4 h-4" />
+    center: <Layout className="w-4 h-4" />,
+    image: <Image className="w-4 h-4" />
   };
 
   if (isPresentationMode) {

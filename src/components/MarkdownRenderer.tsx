@@ -98,7 +98,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         const parts = title.split('|');
         displayTitle = parts[0] || alt;
         
-        parts.forEach(part => {
+        parts.forEach(({part}: any) => {
           const trimmed = part.trim();
           if (trimmed.startsWith('width:')) {
             width = trimmed.replace('width:', '');

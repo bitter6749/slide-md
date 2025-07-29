@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { SlideEditor } from './components/SlideEditor';
 
 // サンプルプレゼンテーションの内容を読み込み
@@ -648,9 +648,9 @@ function App() {
   }, []);
 
   // Markdownの変更を保存
-  const handleMarkdownChange = (markdown: string) => {
-    localStorage.setItem('markdown-presentation', markdown);
-  };
+  // const handleMarkdownChange = (markdown: string) => {
+  //   localStorage.setItem('markdown-presentation', markdown);
+  // };
 
   return (
     <div className="App">
