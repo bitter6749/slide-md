@@ -68,27 +68,8 @@ export function detectLayout(slideContent: string): SlideLayout {
   
   // 画像単体の検出
   if (trimmed.match(/^!\[.*?\]\(.*?\)$/m) && trimmed.split('\n').filter(line => line.trim()).length <= 3) {
-    return 'hero';
-  }
-  
-  // セクション（H3）
-  if (trimmed.startsWith('### ')) return 'section';
-  
-  // デフォルトは通常のコンテンツスライド
-  return 'content';
-}
-
-// Markdownを解析してスライドに分割
-export function parseMarkdown(markdown: string): PresentationData {
-  // メタデータの解析と除去
-  const metadata = parseMetadata(markdown);
-  const contentWithoutMetadata = markdown.replace(/^---\n[\s\S]*?\n---\n?/, '');
-  
-  // スライドに分割
-  const slideContents = contentWithoutMetadata
-    .split(/\n---\n/)
-    .map(content => content.trim())
-    .filter(content => content.length > 0);
+  // コードブロック内の---を無視してスライドに分割
+  const slideContents = splitSlidesIgnoringCodeBlocks(contentWithoutMetadata);
 
   const slides: Slide[] = slideContents.map((content, index) => ({
     id: `slide-${index}`,
@@ -103,6 +84,49 @@ export function parseMarkdown(markdown: string): PresentationData {
   };
 }
 
+// コードブロック内の---を無視してスライドを分割する関数
+function splitSlidesIgnoringCodeBlocks(content: string): string[] {
+  const slides: string[] = [];
+  let currentSlide = '';
+  let inCodeBlock = false;
+  let codeBlockDelimiter = '';
+  
+  const lines = content.split('\n');
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    
+    // コードブロックの開始/終了を検出
+    if (line.startsWith('```')) {
+      if (!inCodeBlock) {
+        // コードブロック開始
+        inCodeBlock = true;
+        codeBlockDelimiter = '```';
+      } else if (inCodeBlock && codeBlockDelimiter === '```') {
+        // コードブロック終了
+        inCodeBlock = false;
+        codeBlockDelimiter = '';
+      }
+      currentSlide += line + '\n';
+    } else if (line === '---' && !inCodeBlock) {
+      // コードブロック外のスライド区切り
+      if (currentSlide.trim()) {
+        slides.push(currentSlide.trim());
+        currentSlide = '';
+      }
+    } else {
+      // 通常の行またはコードブロック内の行
+      currentSlide += line + '\n';
+    }
+  }
+  
+  // 最後のスライドを追加
+  if (currentSlide.trim()) {
+    slides.push(currentSlide.trim());
+  }
+  
+  return slides.filter(slide => slide.length > 0);
+}
 // レイアウト挿入用のテンプレート
 export const layoutTemplates: Record<SlideLayout, string> = {
   title: `# プレゼンテーションタイトル
