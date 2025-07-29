@@ -26,7 +26,8 @@ export type SlideLayout =
   | 'team'
   | 'hero'
   | 'code'
-  | 'center';
+  | 'center'
+  | 'image';
 
 export interface PresentationData {
   metadata: SlideMetadata;

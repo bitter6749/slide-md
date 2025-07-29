@@ -32,50 +32,78 @@ export function parseMetadata(content: string): SlideMetadata {
 }
 
 // レイアウトを自動判定する関数
+
+// detectLayout関数の修正
 export function detectLayout(slideContent: string): SlideLayout {
   const trimmed = slideContent.trim();
-  
-  // タイトルスライド検出（H1で始まる）
-  if (trimmed.startsWith('# ')) return 'title';
-  
-  // 特殊コンテナ記法の検出
-  if (trimmed.includes('::: split')) return 'split';
-  if (trimmed.includes('::: compare')) return 'compare';
-  if (trimmed.includes('::: gallery')) return 'gallery';
-  if (trimmed.includes('::: quote')) return 'quote';
-  if (trimmed.includes('::: timeline')) return 'timeline';
-  if (trimmed.includes('::: features')) return 'features';
-  if (trimmed.includes('::: stats')) return 'stats';
-  if (trimmed.includes('::: team')) return 'team';
-  if (trimmed.includes('::: hero')) return 'hero';
-  if (trimmed.includes('::: center')) return 'center';
-  
-  // コードブロック単体の検出
-  if (trimmed.startsWith('```') && trimmed.split('```').length >= 3) {
-    const nonCodeContent = trimmed.replace(/```[\s\S]*?```/g, '').trim();
-    if (!nonCodeContent || nonCodeContent.split('\n').filter(line => line.trim()).length <= 2) {
-      return 'code';
-    }
+
+  // Check if the entire slide is a code block
+  const isCodeBlock = (content: string) => {
+    const lines = content.split('\n');
+    return lines[0].startsWith('```') && lines[lines.length - 1].startsWith('```');
+  };
+
+  if (isCodeBlock(trimmed)) {
+    return 'code';
   }
-  
-  // 引用単体の検出
+
+  // Title slide detection (starts with H1)
+  if (trimmed.startsWith('# ')) return 'title';
+
+  // Ignore layout markers inside code blocks
+  const lines = trimmed.split('\n');
+  let inCodeBlock = false;
+  for (const line of lines) {
+    if (line.startsWith('```')) {
+      inCodeBlock = !inCodeBlock;
+    }
+    if (inCodeBlock) continue;
+
+    if (line.includes('::: split')) return 'split';
+    if (line.includes('::: compare')) return 'compare';
+    if (line.includes('::: gallery')) return 'gallery';
+    if (line.includes('::: quote')) return 'quote';
+    if (line.includes('::: timeline')) return 'timeline';
+    if (line.includes('::: features')) return 'features';
+    if (line.includes('::: stats')) return 'stats';
+    if (line.includes('::: team')) return 'team';
+    if (line.includes('::: hero')) return 'hero';
+    if (line.includes('::: center')) return 'center';
+  }
+
+  // Detect standalone quotes
   if (trimmed.startsWith('> ')) {
-    const lines = trimmed.split('\n').filter(line => line.trim());
-    if (lines.every(line => line.startsWith('> ') || line.trim() === '')) {
+    const quoteLines = trimmed.split('\n').filter(line => line.trim());
+    if (quoteLines.every(line => line.startsWith('> ') || line.trim() === '')) {
       return 'quote';
     }
   }
-  
-  // 画像単体の検出
+
+  // Detect standalone images
   if (trimmed.match(/^!\[.*?\]\(.*?\)$/m) && trimmed.split('\n').filter(line => line.trim()).length <= 3) {
+    return 'image';
   }
+
+  // Default to content layout
+  return 'content';
+}
+
+// parseMarkdown関数の修正
+export function parseMarkdown(content: string): PresentationData {
+  // メタデータを解析
+  const metadata = parseMetadata(content);
+
+  // メタデータを除いたコンテンツを取得
+  const contentWithoutMetadata = content.replace(/^---\n[\s\S]*?\n---/, '').trim();
+
   // コードブロック内の---を無視してスライドに分割
   const slideContents = splitSlidesIgnoringCodeBlocks(contentWithoutMetadata);
 
+  // スライドを生成
   const slides: Slide[] = slideContents.map((content, index) => ({
     id: `slide-${index}`,
     content,
-    layout: detectLayout(content),
+    layout: detectLayout(content), // 修正済み
     index
   }));
 
@@ -91,12 +119,12 @@ function splitSlidesIgnoringCodeBlocks(content: string): string[] {
   let currentSlide = '';
   let inCodeBlock = false;
   let codeBlockDelimiter = '';
-  
+
   const lines = content.split('\n');
-  
+
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    
+
     // コードブロックの開始/終了を検出
     if (line.startsWith('```')) {
       if (!inCodeBlock) {
@@ -109,25 +137,35 @@ function splitSlidesIgnoringCodeBlocks(content: string): string[] {
         codeBlockDelimiter = '';
       }
       currentSlide += line + '\n';
-    } else if (line === '---' && !inCodeBlock) {
-      // コードブロック外のスライド区切り
+      continue;
+    }
+
+    // コードブロック内の行はそのまま追加
+    if (inCodeBlock) {
+      currentSlide += line + '\n';
+      continue;
+    }
+
+    // スライド区切りを検出
+    if (line.trim() === '---') {
       if (currentSlide.trim()) {
         slides.push(currentSlide.trim());
         currentSlide = '';
       }
     } else {
-      // 通常の行またはコードブロック内の行
+      // 通常の行を追加
       currentSlide += line + '\n';
     }
   }
-  
+
   // 最後のスライドを追加
   if (currentSlide.trim()) {
     slides.push(currentSlide.trim());
   }
-  
+
   return slides.filter(slide => slide.length > 0);
 }
+
 // レイアウト挿入用のテンプレート
 export const layoutTemplates: Record<SlideLayout, string> = {
   title: `# プレゼンテーションタイトル
@@ -239,5 +277,7 @@ hello();
 # 中央寄せタイトル
 
 重要なメッセージを中央に配置
-:::`
+:::`,
+  
+  image: `![画像の説明](./images/sample.jpg)`
 };
