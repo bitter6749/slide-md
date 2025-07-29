@@ -68,6 +68,7 @@ export function detectLayout(slideContent: string): SlideLayout {
   
   // 画像単体の検出
   if (trimmed.match(/^!\[.*?\]\(.*?\)$/m) && trimmed.split('\n').filter(line => line.trim()).length <= 3) {
+  }
   // コードブロック内の---を無視してスライドに分割
   const slideContents = splitSlidesIgnoringCodeBlocks(contentWithoutMetadata);
 
