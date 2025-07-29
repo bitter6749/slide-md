@@ -86,9 +86,8 @@ export const SlideEditor: React.FC<SlideEditorProps> = ({ initialMarkdown = '' }
     if (isMarkdownFile) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const content = e.target?.result as string;
-
-        console.log('Uploaded Markdown content:', content);
+        let content = e.target?.result as string;
+        content = content.replace(/\r\n/g, '\n'); // 改行コードを統一
 
         setMarkdown(content);
       };
