@@ -13,15 +13,16 @@ date: 2025-01-29
 
 ---
 
-## 自己紹介
+::: split
+### 自己紹介
 
 - **名前**: 〇〇です
 - **所属**: 沖縄高専 メディア情報工学科
 - **趣味**: プログラミング、ツール作成
 - **好きな技術**: React, tailwindcss, Node.js
 
-![プログラミング風景](https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=600 "コーディング|width:400px|maxHeight:250px")
-
+### ![プログラミング風景](https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=600 "コーディング|width:400px|maxHeight:250px")
+:::
 ---
 
 ## 今日お話しすること
@@ -71,8 +72,6 @@ date: 2025-01-29
 
 ::: compare
 ### PowerPointの現実
-- レイアウトが思い通りにならない
-- フォント設定で時間を消費
 - 画像の配置に苦戦
 - バージョン管理ができない
 - モチベーションが上がらない
@@ -80,9 +79,7 @@ date: 2025-01-29
 
 ### プログラマーの理想
 - コードで管理したい
-- テキストエデイターで編集したい
 - Git でバージョン管理したい
-- 自動レイアウトしてほしい
 - 楽しく作業したい
 - 効率的に作成したい
 :::
@@ -168,6 +165,7 @@ Web技術でのスライド作成に挑戦
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
 
+//　矢印キーで進む・戻る
 document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') {
         nextSlide();
@@ -177,9 +175,9 @@ document.addEventListener('keydown', (e) => {
 });
 
 function nextSlide() {
-    slides[currentSlide].classList.remove('active');
-    currentSlide = (currentSlide + 1) % slides.length;
-    slides[currentSlide].classList.add('active');
+    slides[currentSlide].classList.remove('active'); // 現在のスライドを非表示
+    currentSlide = (currentSlide + 1) % slides.length; //　表示するスライドのインデックスを計算
+    slides[currentSlide].classList.add('active'); // 次のスライドを表示
 }
 ```
 
@@ -310,6 +308,7 @@ function generateSlide(slideData) {
 - **Before**: HTML, CSS, JavaScript
 - **After**: React + Tailwind CSS
 
+###
 ![リアルタイムエディター](https://images.pexels.com/photos/1181298/pexels-photo-1181298.jpeg?auto=compress&cs=tinysrgb&w=600 "エディター|width:450px|maxHeight:280px")
 
 ---
@@ -509,15 +508,16 @@ theme: dark
 
 ---
 
-## 今後の展望
-
+::: split
+### 今後の展望
 - **テーマシステムの強化**
 - **PDF出力機能**
 - **プラグインシステム**
 - **オンライン共有機能**
 
+### 
 ![未来への展望](https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=600 "未来|width:450px|maxHeight:280px")
-
+:::
 ---
 
 ## 高専生へのメッセージ
