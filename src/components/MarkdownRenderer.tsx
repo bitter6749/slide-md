@@ -98,7 +98,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         const parts = title.split('|');
         displayTitle = parts[0] || alt;
         
-        parts.forEach(part => {
+        parts.forEach((part: string)  => {
           const trimmed = part.trim();
           if (trimmed.startsWith('width:')) {
             width = trimmed.replace('width:', '');
@@ -113,7 +113,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       }
       
       return (
-        <div className="flex justify-center items-center w-full overflow-hidden mb-4 md:mb-6">
+        // <div className="flex justify-center items-center w-full overflow-hidden mb-4 md:mb-6">
           <img 
             src={src} 
             alt={alt}
@@ -123,11 +123,14 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
               width,
               height,
               maxWidth,
-              maxHeight
+              maxHeight,
+              display: 'block',
+              marginLeft: 'auto',
+              marginRight: 'auto'
             }}
             loading="lazy"
           />
-        </div>
+        // </div>
       );
     },
     table: ({children}: any) => (

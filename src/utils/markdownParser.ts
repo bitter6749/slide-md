@@ -94,7 +94,7 @@ export function parseMarkdown(content: string): PresentationData {
   const metadata = parseMetadata(content);
 
   // メタデータを除いたコンテンツを取得
-  const contentWithoutMetadata = content.replace(/^---\n[\s\S]*?\n---/, '').trim();
+  const contentWithoutMetadata = content.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '').trim();
 
   // コードブロック内の---を無視してスライドに分割
   const slideContents = splitSlidesIgnoringCodeBlocks(contentWithoutMetadata);
