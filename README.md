@@ -2,6 +2,12 @@
 
 Markdownでスライドを作成できるプレゼンテーションツールです。
 
+## アプリのURL
+https://slide-md.vercel.app/
+
+## ドキュメント
+- ドキュメントはslide/DOCUMENTATION.mdに記述されています。
+
 ## 機能
 
 - リアルタイムプレビュー
@@ -28,3 +34,4 @@ Markdownでスライドを作成できるプレゼンテーションツールで
 ```markdown
 ![サンプル画像](./image.jpg "画像の説明|width:500px|maxHeight:400px")
 ```
+
